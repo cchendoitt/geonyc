@@ -6,10 +6,11 @@ Side by side UI for GeoNYC, GeoClient, and Esri Locator
 
 Install "bigapple" package
 
+https://github.com/cchendoitt/bigapple
 
 ## Installation
 
-git clone 
+git clone https://github.com/cchendoitt/geonyc
 
 on workstation command line
   
