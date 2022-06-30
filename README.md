@@ -22,6 +22,7 @@ on workstation command line
 
   open browser with url http://localhost:5000 
 
+## Optional 
 
 To hot deploy:
 
