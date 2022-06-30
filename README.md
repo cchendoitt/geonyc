@@ -1,6 +1,6 @@
 # GEONYC
 
-Side by side UI for GeoNYC, GeoClient, and Esri Locator
+Side by side UI for BigApple, GeoClient, and Esri Locator
 
 ## Pre-Install
 
