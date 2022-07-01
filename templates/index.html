@@ -41,13 +41,12 @@
         }
         .response {
           clear: both;
-          margin-top: 45px;
         }
         .json-section {
           overflow-y: auto;
           background-color: #464646;
           color: white;
-          min-height: 600px;
+          min-height: 1000px;
         }
         .place-holder {
           float: left;
@@ -76,13 +75,9 @@
           data: {name: document.getElementById("geolocator-input").value},
           success: function(res) {
             var j = JSON.stringify(res, null, 2);
-              
-            document.getElementById('geolocator-entered').innerHTML = geolocator_input;
-            document.getElementById('geolocator-normalized').innerHTML = "";
             document.getElementById('geolocator-json').innerHTML = '<pre>' + j + '</pre>';
           },
           error: function(res) {
-              document.getElementById('geolocator-normalized').innerHTML = '';
               document.getElementById('geolocator-json').innerHTML = '';
             }
         });
@@ -95,14 +90,10 @@
             type: 'GET',
             success: function(res) {
               var j2 = JSON.stringify(res, null, 2);
-              
-              document.getElementById('geoclient-entered').innerHTML = geoclient_input;
-              document.getElementById('geoclient-normalized').innerHTML = "";
-          
+                      
               document.getElementById('geoclient-json').innerHTML = '<pre>' + j2 + '</pre>';
             },
             error: function(res) {
-              document.getElementById('geoclient-normalized').innerHTML = '';
               document.getElementById('geoclient-json').innerHTML = '';
             }
           });
@@ -116,17 +107,13 @@
             success: function(res) {
               var j3 = JSON.stringify(res, null, 2);
               
-              document.getElementById('esrilocator-entered').innerHTML = esrilocator_input;
               if (res.candidates.length > 0) {
-                document.getElementById('esrilocator-normalized').innerHTML = res.candidates[0].address;
-                document.getElementById('esrilocator-json').innerHTML = '<pre>' + j3 + '</pre>';
+                   document.getElementById('esrilocator-json').innerHTML = '<pre>' + j3 + '</pre>';
               } else {
-                document.getElementById('esrilocator-normalized').innerHTML = '';
                 document.getElementById('esrilocator-json').innerHTML = 'entered location not found!'
               }
             },
             error: function(res) {
-              document.getElementById('esrilocator-normalized').innerHTML = '';
               document.getElementById('esrilocator-json').innerHTML = '';
             }
           });
@@ -151,28 +138,14 @@
           </div>            
         </form>
       </div>
-      <div class="response">
-        <div class="entered-label">
-          You have entered 
-        </div>
-        <div class="entered-section" id="geolocator-entered">
-          {{location}} 
-        </div>
-        
-    
-        <div class="normalized-label">
-            Normalized
-        </div>
-        <div class="normalized-section" id="geolocator-normalized"></div>
-        
-        <div>
-          <div class="code-header">
+  
+      <div>
+        <div class="code-header">
             <div class="json-response-label">
               JSON Response
               <a href="#" class="float-right copy-clipboard"><i onclick="json_copy()" class="fa fa-files-o" aria-hidden="true"></i></a>
             </div>
             <div class="json-section" id="geolocator-json"></div>
-          </div>
         </div>
       </div>
     </div>
@@ -188,18 +161,6 @@
         </form>
       </div>
       <div class="response">
-        <div class="entered-label">
-          You have entered 
-        </div>
-        <div class="entered-section" id="geoclient-entered">
-        </div>
-    
-        <div class="normalized-label">
-          Normalized
-        </div>
-        <div class="normalized-section" id="geoclient-normalized"> 
-        </div>
-   
         <div>
           <div class="code-header">
             <div class="json-response-label">
@@ -224,16 +185,6 @@
         </form>
       </div>
       <div class="response">
-        <div class="entered-label">
-          You have entered 
-        </div>
-        <div class="entered-section" id="esrilocator-entered">
-        </div>
-        <div class="normalized-label">
-          Normalized
-        </div>
-        <div class="normalized-section" id="esrilocator-normalized">
-        </div>    
         <div>
           <div class="code-header">
             <div class="json-response-label">
