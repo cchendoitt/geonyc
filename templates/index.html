@@ -70,7 +70,7 @@
        function geolocator() {
         var geolocator_input = document.getElementById("geolocator-input").value;
         $.ajax({
-          url: "/parse",
+          url: "/search",
           type: "POST",
           data: {name: document.getElementById("geolocator-input").value},
           success: function(res) {
