@@ -6,7 +6,16 @@
     <style>
         .title {
           color: #0d6efd;
+          font-size: 28px;
           font-weight: bold;
+          text-align: center;
+          width: 80%;
+        }
+        .btn-finder {
+          position: fixed;
+          top: 10px;
+          right: 20px;
+          font-size: 20px;
           text-align: center;
         }
         .left-pane, .center-pane, .right-pane {
@@ -23,6 +32,7 @@
           margin-left: 20px;
           text-align: left;
           font-weight: bold;
+          width: 100%;
         }
         .entered-section {
           background-color: #5b5b5b;
@@ -124,9 +134,11 @@
 <html>
    <body>
     <div>
-      <h1 class="title">NYC Locators Side by Side</h1>
-      <div class="input-tips">Enter an address, intersection, community district, ZIP code, etc...</div>            
+      <div class="title">NYC Locators Side by Side</div>
+      <a target='_blank' href="finder_example.html" class="btn-finder">nyc-lib Finder proof of concept <br> using BigApple</a>   
     </div>
+
+    <div class="input-tips">Enter an address, intersection, community district, ZIP code, etc...</div>       
     <div id="left-pane" class="left-pane">
       <div class="form-div">  
         <form method="post" action="javascript: geolocator();">  

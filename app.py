@@ -1,15 +1,21 @@
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request
+from flask_cors import CORS
 
 from bigapple.main import BigApple
 import json
 app = Flask(__name__)
 
+CORS(app)
 
 @app.route('/')
 def index():
    print('Request for index page received')
    return render_template('index.html')
+
+@app.route('/finder_example.html')
+def finder():
+   return render_template('finder_example.html')
 
 @app.route('/geoclicnet/v3/search.json', methods=['GET'])
 def search():
