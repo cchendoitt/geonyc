@@ -4,7 +4,7 @@ Side by side UI for BigApple, GeoClient, and Esri Locator
 
 ## Pre-Install
 
-Install "bigapple" package
+Install BigApple package
 
 https://github.com/cchendoitt/bigapple
 
