@@ -9,14 +9,15 @@
           font-size: 28px;
           font-weight: bold;
           text-align: center;
-          width: 80%;
+          width: 60%;
+          float: left;
+          margin-top: 10px;
         }
-        .btn-finder {
-          position: fixed;
-          top: 10px;
-          right: 20px;
+        .lnk-finder {
           font-size: 20px;
           text-align: center;
+          float: left;
+          margin-top: 10px;
         }
         .left-pane, .center-pane, .right-pane {
           width: 30%;
@@ -26,13 +27,16 @@
         }
         .form-div {
           height: 50px;
+          margin-left: 20px;
         }
         .input-tips {
           font-style: italic;
           margin-left: 20px;
           text-align: left;
           font-weight: bold;
-          width: 100%;
+          width: 80%;
+          display: inline-block;
+          margin-top: 15px;
         }
         .entered-section {
           background-color: #5b5b5b;
@@ -66,6 +70,7 @@
         }
         .btn-geolocator {
           float: left;
+          margin-left: 10px;
         }
         .btn-geoclient {
           float: left;
@@ -77,42 +82,51 @@
         }
     </style>
     <script>
-       function geolocator() {
-        var geolocator_input = document.getElementById("geolocator-input").value;
+      var inputBtn = document.getElementById("geolocator-input")
+      inputBtn.addEventListener("keypress", function(event) {
+  
+        if (event.key === "Enter") {
+          event.preventDefault();
+          document.getElementById("myBtn").click();
+        }
+      });
+
+      function geolocator() {
+        document.getElementById('geolocator-json').innerHTML = '';
+        document.getElementById('geoclient-json').innerHTML = '';
+        document.getElementById('esrilocator-json').innerHTML = '';
+
+        var input = document.getElementById("geolocator-input").value;
         $.ajax({
           url: "/search",
           type: "POST",
-          data: {name: document.getElementById("geolocator-input").value},
+          data: {name: input},
           success: function(res) {
             var j = JSON.stringify(res, null, 2);
             document.getElementById('geolocator-json').innerHTML = '<pre>' + j + '</pre>';
           },
-          error: function(res) {
-              document.getElementById('geolocator-json').innerHTML = '';
-            }
+          error: function(xhr, status, error) {
+              var err = eval("(" + xhr.responseText + ")");       
+              document.getElementById('geolocator-json').innerHTML = err.Message;
+          }
         });
 
-       }
-       function geoclient() {
-         var geoclient_input = document.getElementById("geoclient-input").value;
-          $.ajax({
-            url: "https://maps.nyc.gov/geoclient/v2/search.json?app_key=C6322B119E24D5B5F&app_id=oem-cc&input=" + geoclient_input,
+        $.ajax({
+            url: "https://maps.nyc.gov/geoclient/v2/search.json?app_key=C6322B119E24D5B5F&app_id=oem-cc&input=" + input,
             type: 'GET',
             success: function(res) {
               var j2 = JSON.stringify(res, null, 2);
                       
               document.getElementById('geoclient-json').innerHTML = '<pre>' + j2 + '</pre>';
             },
-            error: function(res) {
-              document.getElementById('geoclient-json').innerHTML = '';
+            error: function(xhr, status, error) {
+              var err = eval("(" + xhr.responseText + ")");       
+              document.getElementById('geoclient-json').innerHTML = err.Message;
             }
           });
-       }
 
-       function esrilocator() {
-        var esrilocator_input = document.getElementById("esrilocator-input").value;
           $.ajax({
-            url: "https://mspwva-ctwptl01.csc.nycnet/server/rest/services/NYPDforNYCDOITT/GeocodeServer/findAddressCandidates?SingleLine=" + esrilocator_input + "&outFields=*&outSR=4326&f=json",
+            url: "https://mspwva-ctwptl01.csc.nycnet/server/rest/services/NYPDforNYCDOITT/GeocodeServer/findAddressCandidates?SingleLine=" + input + "&outFields=*&outSR=4326&f=json",
             type: 'GET',
             success: function(res) {
               var j3 = JSON.stringify(res, null, 2);
@@ -123,90 +137,67 @@
                 document.getElementById('esrilocator-json').innerHTML = 'entered location not found!'
               }
             },
-            error: function(res) {
-              document.getElementById('esrilocator-json').innerHTML = '';
+            error: function(xhr, status, error) {
+              var err = eval("(" + xhr.responseText + ")");       
+              document.getElementById('esrilocator-json').innerHTML = err.Message;
             }
           });
+
        }
+    
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <html>
    <body>
-    <div>
-      <div class="title">NYC Locators Side by Side</div>
-      <a target='_blank' href="finder_example.html" class="btn-finder">nyc-lib Finder proof of concept <br> using BigApple</a>   
+    <div style="height: 50px;">
+      <img src="{{ url_for('static', filename='nyc-oti-logo-black-gradient-notext.svg') }}" width="220" style="float: left;margin-top:5px;margin-left: 20px;">
+      <div class="title">NextGen GIS Locators Side by Side</div>
+      <a target='_blank' href="finder_example.html" class="lnk-finder">nyc-lib Finder using BigApple</a>   
     </div>
 
     <div class="input-tips">Enter an address, intersection, community district, ZIP code, etc...</div>       
-    <div id="left-pane" class="left-pane">
-      <div class="form-div">  
-        <form method="post" action="javascript: geolocator();">  
-          <div class="place-holder">
-              <input type="text" class="form-control" size="30" id="geolocator-input" name="geolocator-input">
-          </div>            
-          <div>
-            <button type="submit" class="btn btn-primary px-4 gap-3 btn-geolocator">BigApple</button>
-          </div>            
-        </form>
-      </div>
-  
-      <div>
-        <div class="code-header">
-            <div class="json-response-label">
-              JSON Response
-              <a href="#" class="float-right copy-clipboard"><i onclick="json_copy()" class="fa fa-files-o" aria-hidden="true"></i></a>
-            </div>
-            <div class="json-section" id="geolocator-json"></div>
-        </div>
-      </div>
-    </div>
-    <div id="center-pane" class="center-pane">
-      <div class="form-div">
-        <form method="post" action="javascript:geoclient();">
-          <div class="geoclient-input">
-              <input type="text" class="form-control" size="30" id="geoclient-input" name="name">
-          </div>            
-          <div>
-            <button type="submit" class="btn btn-primary px-4 gap-3 btn-geoclient">GeoClient</button>
-          </div>                
-        </form>
-      </div>
-      <div class="response">
+    <div class="form-div">  
+      <form method="post" action="javascript: geolocator();">  
+        <div class="place-holder">
+            <input type="text" class="form-control" size="50" id="geolocator-input" name="geolocator-input">
+        </div>            
         <div>
-          <div class="code-header">
-            <div class="json-response-label">
-              JSON Response
-              <a href="#" class="float-right copy-clipboard"><i onclick="json_copy()" class="fa fa-files-o" aria-hidden="true"></i></a>
-            </div>
-          </div>
-          <div class="json-section" id="geoclient-json"></div>
-        </div>
-      </div>
+          <button type="submit" class="btn btn-primary px-4 gap-3 btn-geolocator">Submit</button>
+        </div>            
+      </form>
     </div>
     
-    <div id="right-pane" class="right-pane">
-      <div class="form-div">
-        <form method="post" action="javascript: esrilocator();">
-          <div class="geoclient-input">
-              <input type="text" class="form-control" size="30" id="esrilocator-input" name="name">
-          </div>            
-          <div>
-            <button type="submit" class="btn btn-primary px-4 gap-3 btn-esrilocator">Esri Locator</button>
-          </div>                
-        </form>
-      </div>
-      <div class="response">
-        <div>
-          <div class="code-header">
+    <div>
+      <div id="left-pane" class="left-pane">
+        <div class="code-header">
             <div class="json-response-label">
-              JSON Response
+              BigApple Response
+              <a href="#" class="float-right copy-clipboard"><i onclick="json_copy()" class="fa fa-files-o" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="json-section" id="geolocator-json"></div>
+      </div>
+  
+      <div id="center-pane" class="center-pane">
+        <div class="code-header">
+            <div class="json-response-label">
+              GeoClient V2 Response
+              <a href="#" class="float-right copy-clipboard"><i onclick="json_copy()" class="fa fa-files-o" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="json-section" id="geoclient-json"></div>
+      </div>
+    
+      <div id="right-pane" class="right-pane">
+        <div class="code-header">
+            <div class="json-response-label">
+              ESRI Locator Response
               <a href="#" class="float-right copy-clipboard"><i onclick="json_copy()" class="fa fa-files-o" aria-hidden="true"></i></a>
             </div>
           </div>
-          <div class="json-section" id="esrilocator-json"></div>
-        </div>
+        <div class="json-section" id="esrilocator-json"></div>
       </div>
     </div>
-   </body>
+  </body>
 </html>
