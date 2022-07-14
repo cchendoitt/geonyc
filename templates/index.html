@@ -28,6 +28,8 @@
         .form-div {
           height: 50px;
           margin-left: 20px;
+          width: 70%;
+          float: left;
         }
         .input-tips {
           font-style: italic;
@@ -75,6 +77,7 @@
         .btn-geoclient {
           float: left;
           background-color: green;
+          margin-left: 100px;
         }
         .btn-esrilocator {
           float: left;
@@ -91,6 +94,13 @@
         }
       });
 
+      function clearall() {
+        document.getElementById('geolocator-json').innerHTML = '';
+        document.getElementById('geoclient-json').innerHTML = '';
+        document.getElementById('esrilocator-json').innerHTML = '';
+        document.getElementById("geolocator-input").value = '';
+      }
+
       function geolocator() {
         document.getElementById('geolocator-json').innerHTML = '';
         document.getElementById('geoclient-json').innerHTML = '';
@@ -98,16 +108,14 @@
 
         var input = document.getElementById("geolocator-input").value;
         $.ajax({
-          url: "/search",
-          type: "POST",
-          data: {name: input},
+          url: "/geoclicnet/v3/search.json?input=" + input,
+          type: "GET",
           success: function(res) {
             var j = JSON.stringify(res, null, 2);
             document.getElementById('geolocator-json').innerHTML = '<pre>' + j + '</pre>';
           },
           error: function(xhr, status, error) {
-              var err = eval("(" + xhr.responseText + ")");       
-              document.getElementById('geolocator-json').innerHTML = err.Message;
+              document.getElementById('geolocator-json').innerHTML = "BigApple Search Engine error!";
           }
         });
 
@@ -120,8 +128,8 @@
               document.getElementById('geoclient-json').innerHTML = '<pre>' + j2 + '</pre>';
             },
             error: function(xhr, status, error) {
-              var err = eval("(" + xhr.responseText + ")");       
-              document.getElementById('geoclient-json').innerHTML = err.Message;
+ 
+              document.getElementById('geoclient-json').innerHTML = "GeoClient Rest Service error!";
             }
           });
 
@@ -130,16 +138,10 @@
             type: 'GET',
             success: function(res) {
               var j3 = JSON.stringify(res, null, 2);
-              
-              if (res.candidates.length > 0) {
-                   document.getElementById('esrilocator-json').innerHTML = '<pre>' + j3 + '</pre>';
-              } else {
-                document.getElementById('esrilocator-json').innerHTML = 'entered location not found!'
-              }
+              document.getElementById('esrilocator-json').innerHTML = '<pre>' + j3 + '</pre>';
             },
             error: function(xhr, status, error) {
-              var err = eval("(" + xhr.responseText + ")");       
-              document.getElementById('esrilocator-json').innerHTML = err.Message;
+              document.getElementById('esrilocator-json').innerHTML = "Esri Locator service not reponsding. Ask Mohammed or Frank to check the service!";
             }
           });
 
@@ -157,16 +159,23 @@
     </div>
 
     <div class="input-tips">Enter an address, intersection, community district, ZIP code, etc...</div>       
-    <div class="form-div">  
-      <form method="post" action="javascript: geolocator();">  
-        <div class="place-holder">
-            <input type="text" class="form-control" size="50" id="geolocator-input" name="geolocator-input">
-        </div>            
-        <div>
-          <button type="submit" class="btn btn-primary px-4 gap-3 btn-geolocator">Submit</button>
-        </div>            
-      </form>
-    </div>
+    
+    <div style="width: 100%; display: inline-block;">
+      <div class="form-div">  
+        <form method="post" action="javascript: geolocator();">  
+          <div class="place-holder">
+              <input type="text" class="form-control" size="50" id="geolocator-input" name="geolocator-input">
+          </div>            
+          <div>
+            <button type="submit" class="btn btn-primary px-4 gap-3 btn-geolocator">Submit</button>
+          </div>   
+        </form>
+      </div>
+
+      <div style="width: 20%; float: left;">
+        <button onclick="clearall()" class="btn btn-primary px-4 gap-3 btn-geoclient">Clear ALL</button>
+      </div>
+  </div>            
     
     <div>
       <div id="left-pane" class="left-pane">
