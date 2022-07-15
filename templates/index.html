@@ -85,20 +85,12 @@
         }
     </style>
     <script>
-      var inputBtn = document.getElementById("geolocator-input")
-      inputBtn.addEventListener("keypress", function(event) {
-  
-        if (event.key === "Enter") {
-          event.preventDefault();
-          document.getElementById("myBtn").click();
-        }
-      });
-
       function clearall() {
         document.getElementById('geolocator-json').innerHTML = '';
         document.getElementById('geoclient-json').innerHTML = '';
         document.getElementById('esrilocator-json').innerHTML = '';
         document.getElementById("geolocator-input").value = '';
+        $('.lnk-finder').attr('href', "finder_example.html");
       }
 
       function geolocator() {
@@ -113,6 +105,7 @@
           success: function(res) {
             var j = JSON.stringify(res, null, 2);
             document.getElementById('geolocator-json').innerHTML = '<pre>' + j + '</pre>';
+            $('.lnk-finder').attr('href', 'finder_example.html?location=' + $('input').val())
           },
           error: function(xhr, status, error) {
               document.getElementById('geolocator-json').innerHTML = "BigApple Search Engine error!";
@@ -124,11 +117,11 @@
             type: 'GET',
             success: function(res) {
               var j2 = JSON.stringify(res, null, 2);
-                      
+
               document.getElementById('geoclient-json').innerHTML = '<pre>' + j2 + '</pre>';
             },
             error: function(xhr, status, error) {
- 
+
               document.getElementById('geoclient-json').innerHTML = "GeoClient Rest Service error!";
             }
           });
@@ -146,7 +139,7 @@
           });
 
        }
-    
+
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
@@ -155,28 +148,28 @@
     <div style="height: 50px;">
       <img src="{{ url_for('static', filename='nyc-oti-logo-black-gradient-notext.svg') }}" width="220" style="float: left;margin-top:5px;margin-left: 20px;">
       <div class="title">NextGen GIS Locators Side by Side</div>
-      <a target='_blank' href="finder_example.html" class="lnk-finder">nyc-lib Finder using BigApple</a>   
+      <a target='_blank' href="finder_example.html" class="lnk-finder">nyc-lib Finder using BigApple Response</a>
     </div>
 
-    <div class="input-tips">Enter an address, intersection, community district, ZIP code, etc...</div>       
-    
+    <div class="input-tips">Enter an address, intersection, community district, ZIP code, etc...</div>
+
     <div style="width: 100%; display: inline-block;">
-      <div class="form-div">  
-        <form method="post" action="javascript: geolocator();">  
+      <div class="form-div">
+        <form method="post" action="javascript: geolocator();">
           <div class="place-holder">
               <input type="text" class="form-control" size="50" id="geolocator-input" name="geolocator-input">
-          </div>            
+          </div>
           <div>
-            <button type="submit" class="btn btn-primary px-4 gap-3 btn-geolocator">Submit</button>
-          </div>   
+            <button type="submit" id="uberSubmit" class="btn btn-primary px-4 gap-3 btn-geolocator">Submit</button>
+          </div>
         </form>
       </div>
 
       <div style="width: 20%; float: left;">
         <button onclick="clearall()" class="btn btn-primary px-4 gap-3 btn-geoclient">Clear ALL</button>
       </div>
-  </div>            
-    
+  </div>
+
     <div>
       <div id="left-pane" class="left-pane">
         <div class="code-header">
@@ -187,7 +180,7 @@
         </div>
         <div class="json-section" id="geolocator-json"></div>
       </div>
-  
+
       <div id="center-pane" class="center-pane">
         <div class="code-header">
             <div class="json-response-label">
@@ -197,7 +190,7 @@
         </div>
         <div class="json-section" id="geoclient-json"></div>
       </div>
-    
+
       <div id="right-pane" class="right-pane">
         <div class="code-header">
             <div class="json-response-label">
@@ -208,5 +201,14 @@
         <div class="json-section" id="esrilocator-json"></div>
       </div>
     </div>
+    <script>
+	      var inputBtn = document.getElementById("geolocator-input")
+	      inputBtn.addEventListener("keypress", function(event) {
+	        if (event.key === "Enter") {
+	          event.preventDefault();
+	          document.getElementById("uberSubmit").click();
+	        }
+      });
+     </script>
   </body>
 </html>
