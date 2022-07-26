@@ -134,7 +134,13 @@
               document.getElementById('esrilocator-json').innerHTML = '<pre>' + j3 + '</pre>';
             },
             error: function(xhr, status, error) {
-              document.getElementById('esrilocator-json').innerHTML = "Esri Locator service not reponsding. Ask Mohammed or Frank to check the service!";
+              msg = "If you see this message. Could be a couple of reasons:"
+                    + "<br> 1. Esri Locator service not reponsding"
+                    + "<br> Check if https://mspwva-ctwptl01.csc.nycnet/server/rest/services/NYPDforNYCDOITT/GeocodeServer is accessibe in your browser."
+                    + "<br> Click Advanced if you see 'Your connection isn't private, and continue..."
+                    + "<br><br>2. If the service is not accessibe, ask Mohammed or Frank to check the service!";
+
+                  document.getElementById('esrilocator-json').innerHTML = 
             }
           });
 
