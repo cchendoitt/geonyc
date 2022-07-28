@@ -135,13 +135,13 @@
             },
             error: function(xhr, status, error) {
               msg = "If you see this message. Could be a couple of reasons:"
-                    + "<br><br> 1. Esri Locator service is not responding. Check if"
+                    + "<br><br> 1. Check if the ESRI Locator service URL is accessibe from your browser."
                     + "<br><br> https://mspwva-ctwptl01.csc.nycnet/server/rest/services/NYPDforNYCDOITT/GeocodeServer"
-                    + "<br><br> is accessibe in your browser."
-                    + "<br><br> Click Advanced if you see 'Your connection isn't private, and continue..."
-                    + "<br><br>2. If the service is not accessibe, ask Mohammed or Frank to check the service!";
+                    + "<br><br>  Click Advanced if you see 'Your connection isn't private, and continue..."
+                    + "<br><br>2. If the URL is accessibe, come back to this page, input an address and click Submit button 10+ times. ESRI Locator seems have a DB connection leak or/and DB connection auto recover issue."
+                    + "<br><br>3. If still see this message, ask Mohammed or Frank to check the service.";
 
-                  document.getElementById('esrilocator-json').innerHTML = msg
+              document.getElementById('esrilocator-json').innerHTML = msg
             }
           });
 
