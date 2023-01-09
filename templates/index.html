@@ -99,13 +99,16 @@
         document.getElementById('esrilocator-json').innerHTML = '';
 
         var input = document.getElementById("geolocator-input").value;
+        if (input.indexOf('&') > -1)
+        	input = input.replace('&', '@');
+
         $.ajax({
           url: "/geoclicnet/v3/search.json?input=" + input,
           type: "GET",
           success: function(res) {
             var j = JSON.stringify(res, null, 2);
             document.getElementById('geolocator-json').innerHTML = '<pre>' + j + '</pre>';
-            $('.lnk-finder').attr('href', 'finder_example.html?location=' + $('input').val())
+            $('.lnk-finder').attr('href', 'finder_example.html?location=' + $('input').val().replace('&', 'AND'))
           },
           error: function(xhr, status, error) {
               document.getElementById('geolocator-json').innerHTML = "BigApple Search Engine error!";
